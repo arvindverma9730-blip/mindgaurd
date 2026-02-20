@@ -38,6 +38,8 @@
 
   async function predict() {
       const prediction = await model.predict(webcam.canvas);
+
+     console.log(prediction);
       let highest = prediction.reduce((a, b) => a.probability > b.probability ? a : b);
 
       document.getElementById("emotion").innerText = "Detected: " + highest.className;
@@ -66,4 +68,5 @@
 </script>
 </body>
 </html>
+
 
