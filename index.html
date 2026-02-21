@@ -39,13 +39,21 @@
   async function predict() {
       const prediction = await model.predict(webcam.canvas);
 
-     console.log(prediction);
-      let highest = prediction.reduce((a, b) => a.probability > b.probability ? a : b);
+    // Find highest probability emotion
+    let highest = prediction[0];
 
-      document.getElementById("emotion").innerText = "Detected: " + highest.className;
-      showSuggestions(highest.className);
-  }
+    for (let i = 1; i < prediction.length; i++) {
+        if (prediction[i].probability > highest.probability) {
+            highest = prediction[i];
+        }
+    }
 
+    const emotion = highest.className;
+
+    document.getElementById("emotion").innerText = "Detected: " + emotion;
+
+    showSuggestions(emotion);
+}
   function showSuggestions(emotion) {
       let suggestions = "";
 
@@ -68,5 +76,6 @@
 </script>
 </body>
 </html>
+
 
 
