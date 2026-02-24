@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#764ba2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
   <style>
 body {
     margin: 0;
@@ -19,14 +23,18 @@ body {
     margin-bottom: 20px;
 }
 
-.camera-card, .result-card {
-    background: rgba(255,255,255,0.1);
-    padding: 20px;
-    margin: 15px auto;
-    border-radius: 20px;
-    width: 90%;
+.camera-card {
+    position: relative;
+    width: 100%;
     max-width: 400px;
-    backdrop-filter: blur(10px);
+    height: 300px;
+    overflow: hidden;
+    border-radius: 20px;
+}
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 20px;
 }
 
 .start-btn {
@@ -88,6 +96,7 @@ body {
       window.requestAnimationFrame(loop);
 
       document.getElementById("webcam-container").appendChild(webcam.canvas);
+      document.querySelector(".start-btn").style.display = "none";
   }
 
   async function loop() {
@@ -117,19 +126,18 @@ body {
   function showSuggestions(emotion) {
        let suggestions = "";
 
-    if (emotion === "angry") {
-        suggestions = "🔔 You seem stressed!<br>• Take 5 deep breaths<br>• Drink water<br>• Go for short walk";
-    } 
-    else if (emotion === "sad") {
-        suggestions = "💙 You look sad.<br>• Call a friend<br>• Listen to music<br>• Write gratitude journal";
-    } 
-    else if (emotion === "happy") {
-        suggestions = "😊 You're happy!<br>• Work on big goals<br>• Help someone<br>• Exercise";
-    } 
-    else {
-        suggestions = "😐 Stay balanced.<br>• Plan your day<br>• Focus 25 minutes session";
-    }
-
+   if (emotion === "happy") {
+    document.body.style.background = "linear-gradient(135deg,#f6d365,#fda085)";
+}
+else if (emotion === "sad") {
+    document.body.style.background = "linear-gradient(135deg,#5f9cff,#3f51b5)";
+}
+else if (emotion === "angry") {
+    document.body.style.background = "linear-gradient(135deg,#ff512f,#dd2476)";
+}
+else {
+    document.body.style.background = "linear-gradient(135deg,#667eea,#764ba2)";
+}
     document.getElementById("suggestions").innerHTML = suggestions;
 }
 
@@ -139,6 +147,7 @@ body {
 
 </body>
 </html>
+
 
 
 
