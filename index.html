@@ -14,21 +14,20 @@ body {
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
+    text-align: center;
 }
 
 .container {
-    text-align: center;
     padding: 20px;
 }
 
 .camera-card {
-    position: relative;
     width: 100%;
     max-width: 400px;
     height: 300px;
     margin: auto;
-    overflow: hidden;
     border-radius: 20px;
+    overflow: hidden;
 }
 
 canvas {
@@ -38,7 +37,7 @@ canvas {
 }
 
 .start-btn {
-    margin-top: 15px;
+    margin-top: 20px;
     padding: 12px 20px;
     border: none;
     border-radius: 30px;
@@ -51,18 +50,16 @@ canvas {
 
 <body>
 
-<div class="container">
-    <h1>🧠 MindGuard AI</h1>
+<h1>🧠 MindGuard AI</h1>
 
-    <div class="camera-card">
-        <div id="webcam-container"></div>
-    </div>
-
-    <button id="startBtn" class="start-btn">Start Camera</button>
-
-    <h2 id="emotion">Emotion: --</h2>
-    <div id="suggestions"></div>
+<div class="camera-card">
+    <div id="webcam-container"></div>
 </div>
+
+<button id="startBtn" class="start-btn">Start Camera</button>
+
+<h2 id="emotion">Emotion: --</h2>
+<div id="suggestions"></div>
 
 <script>
 const URL = "./";
