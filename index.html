@@ -3,9 +3,12 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#764ba2">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-  <style>
+<title>MindGuard AI</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+
+<style>
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
@@ -18,11 +21,6 @@ body {
     padding: 20px;
 }
 
-.subtitle {
-    opacity: 0.8;
-    margin-bottom: 20px;
-}
-
 .camera-card {
     position: relative;
     width: 100%;
@@ -31,6 +29,7 @@ body {
     overflow: hidden;
     border-radius: 20px;
 }
+
 canvas {
     width: 100% !important;
     height: 100% !important;
@@ -45,70 +44,53 @@ canvas {
     background: #ffcc70;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
-}
-
-.start-btn:hover {
-    background: #ffaa00;
-}
-
-#suggestions {
-    font-size: 18px;
-    margin-top: 10px;
 }
 </style>
-  <title>Emotion AI Assistant</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 </head>
-<body >
-  <div class="container">
+
+<body>
+
+<div class="container">
     <h1>🧠 MindGuard AI</h1>
-    <p class="subtitle">Your Emotion-Based Smart Assistant</p>
 
     <div class="camera-card">
         <div id="webcam-container"></div>
         <button onclick="init()" class="start-btn">Start Camera</button>
     </div>
 
-    <div class="result-card">
-        <h2 id="emotion">Emotion: --</h2>
-        <div id="suggestions"></div>
-    </div>
+    <h2 id="emotion">Emotion: --</h2>
+    <div id="suggestions"></div>
 </div>
 
-</body>
-
 <script>
-  const URL = "./";
-  let model, webcam;
-  let lastEmotion = "";
+const URL = "./";
+let model, webcam;
 
-  async function init() {
-      const modelURL = URL + "model.json";
-      const metadataURL = URL + "metadata.json";
+async function init() {
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
 
-      model = await tmImage.load(modelURL, metadataURL);
+    model = await tmImage.load(modelURL, metadataURL);
 
-      webcam = new tmImage.Webcam(300, 300, true);
-      await webcam.setup();
-      await webcam.play();
-      window.requestAnimationFrame(loop);
+    webcam = new tmImage.Webcam(300, 300, true);
+    await webcam.setup();
+    await webcam.play();
 
-      document.getElementById("webcam-container").appendChild(webcam.canvas);
-      document.querySelector(".start-btn").style.display = "none";
-  }
+    document.getElementById("webcam-container").appendChild(webcam.canvas);
+    document.querySelector(".start-btn").style.display = "none";
 
-  async function loop() {
-      webcam.update();
-      await predict();
-      window.requestAnimationFrame(loop);
-  }
+    window.requestAnimationFrame(loop);
+}
 
-  async function predict() {
-      const prediction = await model.predict(webcam.canvas);
+async function loop() {
+    webcam.update();
+    await predict();
+    window.requestAnimationFrame(loop);
+}
 
-    // Find highest probability emotion
+async function predict() {
+    const prediction = await model.predict(webcam.canvas);
+
     let highest = prediction[0];
 
     for (let i = 1; i < prediction.length; i++) {
@@ -117,38 +99,32 @@ canvas {
         }
     }
 
-    const emotion = highest.className;
-
+    const emotion = highest.className.toLowerCase();
     document.getElementById("emotion").innerText = "Detected: " + emotion;
 
     showSuggestions(emotion);
 }
-  function showSuggestions(emotion) {
-       let suggestions = "";
 
-   if (emotion === "happy") {
-    document.body.style.background = "linear-gradient(135deg,#f6d365,#fda085)";
-}
-else if (emotion === "sad") {
-    document.body.style.background = "linear-gradient(135deg,#5f9cff,#3f51b5)";
-}
-else if (emotion === "angry") {
-    document.body.style.background = "linear-gradient(135deg,#ff512f,#dd2476)";
-}
-else {
-    document.body.style.background = "linear-gradient(135deg,#667eea,#764ba2)";
-}
-    document.getElementById("suggestions").innerHTML = suggestions;
-}
+function showSuggestions(emotion) {
 
-      document.getElementById("suggestions").innerHTML = suggestions;
-  }
+    if (emotion === "happy") {
+        document.body.style.background = "linear-gradient(135deg,#f6d365,#fda085)";
+        document.getElementById("suggestions").innerHTML = "😊 You're happy! Keep going!";
+    }
+    else if (emotion === "sad") {
+        document.body.style.background = "linear-gradient(135deg,#5f9cff,#3f51b5)";
+        document.getElementById("suggestions").innerHTML = "💙 You look sad. Take a short break.";
+    }
+    else if (emotion === "angry") {
+        document.body.style.background = "linear-gradient(135deg,#ff512f,#dd2476)";
+        document.getElementById("suggestions").innerHTML = "🔔 Take deep breaths and relax.";
+    }
+    else {
+        document.body.style.background = "linear-gradient(135deg,#667eea,#764ba2)";
+        document.getElementById("suggestions").innerHTML = "😐 Stay balanced and focused.";
+    }
+}
 </script>
 
 </body>
 </html>
-
-
-
-
-
