@@ -4,9 +4,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#764ba2">
 <title>MindGuard AI</title>
-</body>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+    document.getElementById("startBtn").addEventListener("click", init);
 
 <style> {
     margin: 0;
@@ -54,7 +54,7 @@ canvas {
 
     <div class="camera-card">
         <div id="webcam-container"></div>
-        <button onclick="init()" class="start-btn">Start Camera</button>
+        <button id="startBtn" class="start-btn">
     </div>
 
     <h2 id="emotion">Emotion: --</h2>
@@ -127,4 +127,5 @@ function showSuggestions(emotion) {
 
 </body>
 </html>
+
 
